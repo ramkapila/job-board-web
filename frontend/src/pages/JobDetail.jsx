@@ -28,43 +28,46 @@ export default function JobDetail() {
     }
   };
 
-  if (!job) return <div className="text-center py-20 text-gray-500">Loading...</div>;
+  if (!job) return <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-gray-500">Loading...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8">
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h1 className="text-2xl font-bold text-blue-700">{job.title}</h1>
-        <p className="text-gray-600 mt-1">{job.company} &bull; {job.location}</p>
-        <div className="flex gap-2 mt-3 flex-wrap">
-          <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">{job.type}</span>
-          {job.salary && <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">{job.salary}</span>}
-        </div>
-        <div className="mt-4">
-          <h3 className="font-semibold mb-1">Description</h3>
-          <p className="text-gray-700 whitespace-pre-line">{job.description}</p>
-        </div>
-        {job.skills?.length > 0 && (
+    <div className="min-h-screen bg-neutral-950 text-white pt-20">
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 mb-6">
+          <h1 className="text-2xl font-bold text-white">{job.title}</h1>
+          <p className="text-gray-400 mt-1">{job.company} &bull; {job.location}</p>
+          <div className="flex gap-2 mt-3 flex-wrap">
+            <span className="bg-blue-900 text-blue-300 text-xs px-2 py-1 rounded">{job.type}</span>
+            {job.salary && <span className="bg-green-900 text-green-300 text-xs px-2 py-1 rounded">{job.salary}</span>}
+            {job.expiresAt && <span className="bg-neutral-800 text-gray-400 text-xs px-2 py-1 rounded">Expires: {new Date(job.expiresAt).toLocaleDateString()}</span>}
+          </div>
           <div className="mt-4">
-            <h3 className="font-semibold mb-2">Required Skills</h3>
-            <div className="flex gap-2 flex-wrap">
-              {job.skills.map(s => <span key={s} className="bg-gray-100 text-gray-600 text-sm px-2 py-1 rounded">{s}</span>)}
+            <h3 className="font-semibold mb-1 text-gray-300">Description</h3>
+            <p className="text-gray-400 whitespace-pre-line">{job.description}</p>
+          </div>
+          {job.skills?.length > 0 && (
+            <div className="mt-4">
+              <h3 className="font-semibold mb-2 text-gray-300">Required Skills</h3>
+              <div className="flex gap-2 flex-wrap">
+                {job.skills.map(s => <span key={s} className="bg-neutral-800 text-gray-300 text-sm px-2 py-1 rounded">{s}</span>)}
+              </div>
             </div>
+          )}
+        </div>
+
+        {user?.role === 'seeker' && !applied && (
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+            <h3 className="font-semibold text-lg mb-3">Apply for this Job</h3>
+            <form onSubmit={handleApply} className="space-y-3">
+              <textarea className="w-full bg-neutral-800 border border-neutral-700 rounded px-3 py-2 h-32 text-white placeholder-gray-500"
+                placeholder="Cover letter (optional)" value={coverLetter} onChange={e => setCoverLetter(e.target.value)} />
+              <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold">Submit Application</button>
+            </form>
           </div>
         )}
+        {message && <p className={`mt-4 text-sm font-medium ${applied ? 'text-green-400' : 'text-red-400'}`}>{message}</p>}
+        {!user && <p className="mt-4 text-sm text-gray-500">Please <a href="/login" className="text-blue-400 underline">login</a> to apply.</p>}
       </div>
-
-      {user?.role === 'seeker' && !applied && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="font-semibold text-lg mb-3">Apply for this Job</h3>
-          <form onSubmit={handleApply} className="space-y-3">
-            <textarea className="w-full border rounded px-3 py-2 h-32" placeholder="Cover letter (optional)"
-              value={coverLetter} onChange={e => setCoverLetter(e.target.value)} />
-            <button className="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 font-semibold">Submit Application</button>
-          </form>
-        </div>
-      )}
-      {message && <p className={`mt-4 text-sm font-medium ${applied ? 'text-green-600' : 'text-red-500'}`}>{message}</p>}
-      {!user && <p className="mt-4 text-sm text-gray-500">Please <a href="/login" className="text-blue-700 underline">login</a> to apply.</p>}
     </div>
   );
 }

@@ -40,32 +40,33 @@ export default function Jobs() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      <h2 className="text-2xl font-bold text-blue-700 mb-6">Browse Jobs</h2>
-      <div className="flex gap-3 mb-6 flex-wrap">
-        <input className="border rounded px-3 py-2 flex-1 min-w-[180px]" placeholder="Search title, skills..."
-          value={search} onChange={e => setSearch(e.target.value)} />
-        <input className="border rounded px-3 py-2 w-40" placeholder="Location"
-          value={location} onChange={e => setLocation(e.target.value)} />
-        <select className="border rounded px-3 py-2 w-36" value={type} onChange={e => setType(e.target.value)}>
-          <option value="">All Types</option>
-          <option value="full-time">Full-time</option>
-          <option value="part-time">Part-time</option>
-          <option value="remote">Remote</option>
-          <option value="contract">Contract</option>
-        </select>
-        <button onClick={fetchJobs} className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">Search</button>
-      </div>
-      {loading ? <p className="text-gray-500">Loading...</p> : (
-        <div className="space-y-4">
-          {jobs.length === 0 ? <p className="text-gray-500">No jobs found.</p> :
-            jobs.map(job => (
-              <JobCard key={job._id} job={job}
-                saved={savedIds.includes(job._id)}
-                onSaveToggle={handleSaveToggle} />
-            ))}
+    <div className="min-h-screen bg-neutral-950 text-white pt-20">
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <h2 className="text-2xl font-bold mb-6">Browse Jobs</h2>
+        <div className="flex gap-3 mb-6 flex-wrap">
+          <input className="bg-neutral-900 border border-neutral-700 rounded px-3 py-2 flex-1 min-w-[180px] text-white placeholder-gray-500"
+            placeholder="Search title, skills..." value={search} onChange={e => setSearch(e.target.value)} />
+          <input className="bg-neutral-900 border border-neutral-700 rounded px-3 py-2 w-40 text-white placeholder-gray-500"
+            placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
+          <select className="bg-neutral-900 border border-neutral-700 rounded px-3 py-2 w-36 text-white"
+            value={type} onChange={e => setType(e.target.value)}>
+            <option value="">All Types</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="remote">Remote</option>
+            <option value="contract">Contract</option>
+          </select>
+          <button onClick={fetchJobs} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Search</button>
         </div>
-      )}
+        {loading ? <p className="text-gray-500">Loading...</p> : (
+          <div className="space-y-4">
+            {jobs.length === 0 ? <p className="text-gray-500">No jobs found.</p> :
+              jobs.map(job => (
+                <JobCard key={job._id} job={job} saved={savedIds.includes(job._id)} onSaveToggle={handleSaveToggle} />
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
